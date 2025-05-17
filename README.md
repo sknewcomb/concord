@@ -28,7 +28,7 @@ Concord is my attempt to have a self-hosted and open source chat client similar 
 
 /**
  * 🔐 Milestone 1: Auth System
- * - [ ] Setup auth with NextAuth (email/password)
+ * - [ ] Setup auth with Clerk
  * - [ ] User model in DB with Prisma
  * - [ ] JWT session storage
  */
