@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { useEffect, useRef, useState } from "react";
 
 // Reusable ServerIcon component
 function ServerIcon({ children }: { children: React.ReactNode }) {
@@ -46,82 +47,26 @@ function Message({
   );
 }
 
-const messages = [
-  {
-    id: 1,
-    user: "Alice",
-    avatar: "A",
-    content: "Hey everyone! 👋",
-  },
-  {
-    id: 2,
-    user: "Bob",
-    avatar: "B",
-    content: "Hi Alice! How's it going?",
-  },
-  {
-    id: 3,
-    user: "Charlie",
-    avatar: "C",
-    content: "Welcome to the Discord UI clone.",
-  },
-  {
-    id: 4,
-    user: "Alice",
-    avatar: "A",
-    content: "This looks really cool!",
-  },
-  {
-    id: 5,
-    user: "Bob",
-    avatar: "B",
-    content: "Yeah, I like the layout.",
-  },
-  {
-    id: 6,
-    user: "Charlie",
-    avatar: "C",
-    content: "Should we add more features?",
-  },
-  {
-    id: 7,
-    user: "Alice",
-    avatar: "A",
-    content: "Definitely! Maybe voice channels next?",
-  },
-  {
-    id: 8,
-    user: "Bob",
-    avatar: "B",
-    content: "Or emoji reactions!",
-  },
-  {
-    id: 9,
-    user: "Charlie",
-    avatar: "C",
-    content: "Let's keep it simple for now.",
-  },
-  {
-    id: 10,
-    user: "Alice",
-    avatar: "A",
-    content: "Agreed. This is a great start.",
-  },
-  {
-    id: 11,
-    user: "Bob",
-    avatar: "B",
-    content: "I'll test scrolling now.",
-  },
-  {
-    id: 12,
-    user: "Charlie",
-    avatar: "C",
-    content: "Scroll should work with all these messages!",
-  },
-];
-
 export default function Home() {
+  const [messages, setMessages] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Fetch users
+    fetch("/api/users")
+      .then((res) => res.json())
+      .then(setUsers);
+    // Fetch messages (for now, channelId is hardcoded or can be dynamic later)
+    fetch("/api/messages?channelId=demo-channel")
+      .then((res) => res.json())
+      .then(setMessages);
+  }, []);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages.length]);
+
   return (
     <div className="flex h-screen bg-muted">
       {/* Sidebar: Servers */}
@@ -147,14 +92,15 @@ export default function Home() {
         </div>
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {messages.map((msg) => (
+          {messages.map((msg: any) => (
             <Message
               key={msg.id}
-              user={msg.user}
-              avatar={msg.avatar}
+              user={users.find((u: any) => u.id === msg.userId)?.username || msg.userId}
+              avatar={users.find((u: any) => u.id === msg.userId)?.username?.[0] || "?"}
               content={msg.content}
             />
           ))}
+          <div ref={messagesEndRef} />
         </div>
         {/* Message Input */}
         <form className="border-t p-4 flex gap-2 bg-background">
