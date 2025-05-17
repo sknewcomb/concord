@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/utils';
+import { prisma } from '@/lib/prisma'
 
 // GET /api/channels?serverId=... - List channels for a server
 export async function GET(req: Request) {
