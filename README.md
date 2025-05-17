@@ -20,10 +20,10 @@ Concord is my attempt to have a self-hosted and open source chat client similar 
 
 /**
  * 🏁 Milestone 0: Project Bootstrap
- * - [ ] Scaffold new Next.js app (App Router, Typescript, Tailwind)
- * - [ ] Install shadcn/ui with TailwindCSS
- * - [ ] Setup ESLint + Prettier + Husky (optional)
- * - [ ] Dockerize app (basic Dockerfile + dev service)
+ * - [X] Scaffold new Next.js app (App Router, Typescript, Tailwind)
+ * - [X] Install shadcn/ui with TailwindCSS
+ * - [X] Setup ESLint + Prettier + Husky (optional)
+ * - [X] Dockerize app (basic Dockerfile + dev service)
  */
 
 /**
