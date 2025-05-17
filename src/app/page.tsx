@@ -63,6 +63,7 @@ function Message({
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [channelId, setChannelId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,11 +71,27 @@ export default function Home() {
     fetch("/api/users")
       .then((res) => res.json())
       .then(setUsers);
-    // Fetch messages (for now, channelId is hardcoded or can be dynamic later)
-    fetch("/api/messages?channelId=demo-channel")
+    // Fetch servers, then channels for the demo server, then get the 'general' channel ID
+    fetch("/api/servers")
+      .then((res) => res.json())
+      .then((servers) => {
+        const demoServer = servers.find((s: { name: string }) => s.name === "Demo Server");
+        if (!demoServer) return;
+        fetch(`/api/channels?serverId=${demoServer.id}`)
+          .then((res) => res.json())
+          .then((channels) => {
+            const general = channels.find((c: { name: string }) => c.name === "general");
+            if (general) setChannelId(general.id);
+          });
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!channelId) return;
+    fetch(`/api/messages?channelId=${channelId}`)
       .then((res) => res.json())
       .then(setMessages);
-  }, []);
+  }, [channelId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
