@@ -49,7 +49,7 @@ async function main() {
   });
 
   // Create messages in #general
-  const generalChannel = server.channels.find((c) => c.name === 'general');
+  const generalChannel = server.channels.find((c: { name: string }) => c.name === 'general');
   if (generalChannel) {
     await prisma.message.createMany({
       data: [
