@@ -5,6 +5,18 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 
+// User and Message interfaces
+type User = {
+  id: string;
+  username: string;
+};
+
+type Message = {
+  id: string;
+  userId: string;
+  content: string;
+};
+
 // Reusable ServerIcon component
 function ServerIcon({ children }: { children: React.ReactNode }) {
   return (
@@ -49,8 +61,8 @@ function Message({
 }
 
 export default function Home() {
-  const [messages, setMessages] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,11 +105,11 @@ export default function Home() {
         </div>
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {messages.map((msg: any) => (
+          {messages.map((msg) => (
             <Message
               key={msg.id}
-              user={users.find((u: any) => u.id === msg.userId)?.username || msg.userId}
-              avatar={users.find((u: any) => u.id === msg.userId)?.username?.[0] || "?"}
+              user={users.find((u) => u.id === msg.userId)?.username || msg.userId}
+              avatar={users.find((u) => u.id === msg.userId)?.username?.[0] || "?"}
               content={msg.content}
             />
           ))}

@@ -3,6 +3,13 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+  // Clear existing data (order matters due to FKs)
+  await prisma.message.deleteMany();
+  await prisma.membership.deleteMany();
+  await prisma.channel.deleteMany();
+  await prisma.server.deleteMany();
+  await prisma.user.deleteMany();
+
   // Create users
   const alice = await prisma.user.create({
     data: {
