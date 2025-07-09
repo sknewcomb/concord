@@ -13,7 +13,7 @@
     "seed": "node src/prisma/seed.js"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.19.4",
+    "@clerk/nextjs": "^6.23.3",
     "@prisma/client": "^6.8.2",
     "@radix-ui/react-avatar": "^1.1.9",
     "@radix-ui/react-slot": "^1.2.2",
